@@ -1,6 +1,47 @@
-<html>
-	<body>
-		testing
-	</body>
-</html>
 
+<!DOCTYPE html>
+<html>
+<title>Online Channel SNI Hostname Generation</title>
+<head>
+    <script>
+        function fun() {
+            var chl = document.getElementById("chlname").value
+            var sni = convertNAMEforSNI(chl) + ".chl.mq.ibm.com";
+            navigator.clipboard.writeText(sni);
+            document.getElementById("result").innerHTML = sni;
+        }
+
+        function convertNAMEforSNI(name){
+            var str="";
+            for(var i=0; i < name.length; i++){
+                if ( (/[a-z]/).test(name.charAt(i)) ){          // lowercase
+                    str += Number(name.charCodeAt(i)).toString(16)+"-";
+                }else if ( (/[A-Z]/).test(name.charAt(i)) ){    // uppercase
+                    str += name.charAt(i).toLowerCase();
+                }else if ( (/[0-9]/).test(name.charAt(i)) ){    // digit
+                    str += name.charAt(i);
+                }else if (name.charAt(i)=='%'){                 // %
+                    str += "25-";
+                }else if (name.charAt(i)=='-'){                 // -
+                    str += "2d-";
+                }else if (name.charAt(i)=='.'){                 // .
+                    str += "2e-";
+                }else if (name.charAt(i)=='/'){                 // /
+                    str += "2f-";
+                }else if (name.charAt(i)=='_'){                 // _
+                    str += "5f-";
+                }
+            }
+            return str;
+        }
+     </script>
+  </head>
+<body>
+    <label> QMGR Channel Name : </label>
+    <input id="chlname" type = "text" size="50"> </input>
+    <button onclick = "fun()">gen</button>
+    <p>
+        <div id = "result"> </div>
+    </p>
+</body>
+</html>
