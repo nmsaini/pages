@@ -1,14 +1,44 @@
-
 <!DOCTYPE html>
 <html>
 <title>Online Channel SNI Hostname Generation</title>
 <head>
+    <style>
+    p {
+        padding: 8px;
+        margin: 25px;
+
+        /* other styling */
+        border-radius: 10px;
+        color: white;
+        font-family: Arial;
+    }
+    body {
+        font-family: verdana;
+        font-size: 150%;
+        border-radius: 10px;
+        padding: 8px;
+        margin: 25px;
+    }
+    .rs {
+        color: red;
+    }
+    .msg {
+        color: blue;
+        font-family: Arial;
+        font-size: small;
+    }
+    </style>
     <script>
-        function fun() {
+        function compute() {
             var chl = document.getElementById("chlname").value
+            if (chl.length < 1) {
+                document.getElementById("result").innerHTML = "nothing to translate!"
+                return;
+            }
             var sni = convertNAMEforSNI(chl) + ".chl.mq.ibm.com";
             navigator.clipboard.writeText(sni);
             document.getElementById("result").innerHTML = sni;
+            document.getElementById("clip").innerHTML = "copied to clipboard"
         }
 
         function convertNAMEforSNI(name){
@@ -37,11 +67,15 @@
      </script>
   </head>
 <body>
-    <label> QMGR Channel Name : </label>
-    <input id="chlname" type = "text" size="50"> </input>
-    <button onclick = "fun()">gen</button>
+        <label> QMGR Channel Name : </label>
+        <input id="chlname" type = "text" size="50"> </input>
+        <button onclick = "compute()">Generate</button>
     <p>
-        <div id = "result"> </div>
+        <div id = "result" class="rs"> </div>
+    </p>
+    <p>
+        <div id = "clip" class="msg"> </div>
     </p>
 </body>
 </html>
+
